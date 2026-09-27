@@ -6,7 +6,7 @@
 
 <div class="admin">
   <header>
-    <strong>Admin</strong>
+    <strong>Admin <span class="framework-badge">Svelte remote</span></strong>
     <nav>
       <Link to="/" data-testid="remote-nav-overview">Overview</Link>
       <Link to="/users" data-testid="remote-nav-users">Users</Link>
@@ -27,6 +27,17 @@
     border: 1px solid #d9dee4;
     border-radius: 8px;
     overflow: hidden;
+  }
+
+  .framework-badge {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: rgb(255, 62, 0);
+    color: white;
+    font: 600 0.7rem system-ui, sans-serif;
+    vertical-align: middle;
   }
 
   header {
