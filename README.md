@@ -76,6 +76,8 @@ If no host handles the event, the remote writes history itself and fires `popsta
 
 ## Usage
 
+The library isn't published to npm. Its code is in [`packages/svelte-microfrontend-router`](packages/svelte-microfrontend-router), and the demo remote uses it through a pnpm workspace link.
+
 **In the Svelte app (the remote):**
 
 ```ts
@@ -192,7 +194,7 @@ Working and tested:
 
 Known limits (case-sensitive paths, exact-match active links, no SSR) are listed in [`docs/design.md`](docs/design.md#internals).
 
-Next: CI, a live demo, and publishing to npm.
+Next: a live demo.
 
 ## License
 
