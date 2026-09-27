@@ -3,6 +3,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushSync } from 'svelte';
 import { defineRemote, NAVIGATE_EVENT, type MfeNavigateDetail } from '../src/element/defineRemote.js';
 import TestApp from './fixtures/TestApp.svelte';
+import type { RouterCore } from '../src/core/router.svelte.js';
+
+const lastRouter = () => (globalThis as { lastRouter?: RouterCore }).lastRouter!;
 
 defineRemote('test-app', TestApp);
 defineRemote('test-app-light', TestApp, { shadow: false });
@@ -144,6 +147,21 @@ describe('self-managed (no url attribute)', () => {
 });
 
 describe('lifecycle and styles', () => {
+  it.each([
+    ['host-managed', { 'base-path': '/admin', url: '/admin' }],
+    ['self-managed', { 'base-path': '/admin' }]
+  ])('ignores navigation from an app that was removed (%s)', (_mode, attributes) => {
+    const element = render(attributes);
+    const router = lastRouter();
+    const navigate = vi.fn();
+    element.addEventListener(NAVIGATE_EVENT, navigate);
+    element.remove();
+
+    router.navigate('/late');
+    expect(navigate).not.toHaveBeenCalled();
+    expect(window.location.pathname).toBe('/');
+  });
+
   it('unmounts on removal and mounts again when re-added', () => {
     const element = render({ 'base-path': '/admin', url: '/admin/users/42' });
     element.remove();

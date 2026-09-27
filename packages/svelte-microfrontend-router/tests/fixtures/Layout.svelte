@@ -4,6 +4,8 @@
   import { getRouter } from '../../src/context.js';
 
   const router = getRouter();
+  // Lets tests reach the router the way late app code (a timer, a fetch) would.
+  (globalThis as { lastRouter?: typeof router }).lastRouter = router;
 </script>
 
 <nav>

@@ -60,7 +60,12 @@ export function defineRemote(
       const router = createRouter({
         basePath: this.getAttribute('base-path') ?? '/',
         url: hostManaged ? (this.getAttribute('url') ?? '/') : browserUrl(),
-        navigate: (href, { replace }) => (hostManaged ? this.#askHost(href, replace) : this.#writeOwn(href, replace))
+        navigate: (href, { replace }) => {
+          // A late timer or fetch in an app that was already removed must not change the URL.
+          if (!this.isConnected || this.#router !== router) return;
+          if (hostManaged) this.#askHost(href, replace);
+          else this.#writeOwn(href, replace);
+        }
       });
       this.#router = router;
       if (!hostManaged) this.#cleanup.push(listenToBrowser(router));
