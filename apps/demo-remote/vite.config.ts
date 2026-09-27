@@ -10,7 +10,7 @@ export default defineConfig({
       name: 'admin',
       filename: 'remoteEntry.js',
       // Loading this module registers <admin-app>. Nothing is shared: the host is React.
-      exposes: { './register': './src/main.ts' },
+      exposes: { './register': './src/register.ts' },
       shared: {},
       // The exposed module has no exports to type.
       dts: false

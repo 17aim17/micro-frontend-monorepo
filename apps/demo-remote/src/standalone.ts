@@ -3,7 +3,7 @@
 //   pnpm dev:plain  -> the same App as a plain Svelte app, using <Router> directly
 import { mount } from 'svelte';
 import App from './App.svelte';
-import './main.js';
+import './register.js';
 
 const target = document.getElementById('app')!;
 
