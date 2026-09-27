@@ -1,17 +1,14 @@
-import { getContext, hasContext, setContext } from 'svelte';
+import { createContext } from 'svelte';
 import type { RouterCore } from './core/router.svelte.js';
 
-/** Context key for the app's router. `defineRemote` passes it to `mount()`. */
-export const ROUTER_KEY = Symbol('svelte-microfrontend-router');
-const DEPTH_KEY = Symbol('svelte-microfrontend-router/depth');
+const [getRouterContext, setRouterContext, hasRouterContext] = createContext<RouterCore>();
+const [getDepthContext, setDepthContext, hasDepthContext] = createContext<number>();
 
-export function setRouterContext(router: RouterCore): void {
-  setContext(ROUTER_KEY, router);
-}
+export { setRouterContext };
 
 /** The router from context, or `undefined` when there is none. */
 export function findRouter(): RouterCore | undefined {
-  return hasContext(ROUTER_KEY) ? getContext<RouterCore>(ROUTER_KEY) : undefined;
+  return hasRouterContext() ? getRouterContext() : undefined;
 }
 
 /**
@@ -27,12 +24,11 @@ export function getRouter(): RouterCore {
 }
 
 export function setDepth(depth: number): void {
-  setContext(DEPTH_KEY, depth);
+  setDepthContext(depth);
 }
 
 /** How deep in the matched route chain the nearest `<Outlet />` renders. */
 export function getDepth(): number {
-  const depth = getContext<number | undefined>(DEPTH_KEY);
-  if (depth === undefined) throw new Error('<Outlet /> must be used inside a route component rendered by <Router>.');
-  return depth;
+  if (!hasDepthContext()) throw new Error('<Outlet /> must be used inside a route component rendered by <Router>.');
+  return getDepthContext();
 }

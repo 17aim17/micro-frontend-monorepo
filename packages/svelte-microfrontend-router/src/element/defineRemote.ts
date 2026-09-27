@@ -1,7 +1,7 @@
 import { mount, unmount, type Component } from 'svelte';
 import { browserUrl, listenToBrowser, writeHistory } from '../core/browser.js';
 import { createRouter, type RouterCore } from '../core/router.svelte.js';
-import { ROUTER_KEY } from '../context.js';
+import { setRouterContext } from '../context.js';
 
 /** Event the element dispatches when the app wants to navigate. Hosts listen for it. */
 export const NAVIGATE_EVENT = 'mfe-navigate';
@@ -97,7 +97,12 @@ export function defineRemote(
       if (!hostManaged) this.#cleanup.push(listenToBrowser(router));
 
       const target = shadow ? (this.shadowRoot ?? this.attachShadow({ mode: 'open' })) : this;
-      this.#app = mount(App, { target, context: new Map([[ROUTER_KEY, router]]) });
+      // Provide the router as context, the way Svelte's docs mount a component with context.
+      const WithRouter: Component<any> = (...args) => {
+        setRouterContext(router);
+        return App(...args);
+      };
+      this.#app = mount(WithRouter, { target });
     }
 
     #unmount(): void {

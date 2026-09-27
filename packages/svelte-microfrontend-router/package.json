@@ -38,7 +38,7 @@
     "typecheck": "svelte-check --tsconfig ./tsconfig.json --threshold error"
   },
   "peerDependencies": {
-    "svelte": "^5.46.0"
+    "svelte": "^5.57.0"
   },
   "devDependencies": {
     "@sveltejs/package": "^2.5.8",
