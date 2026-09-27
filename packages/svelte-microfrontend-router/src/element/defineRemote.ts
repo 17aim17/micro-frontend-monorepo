@@ -97,10 +97,11 @@ export function defineRemote(
       const handledByHost = !this.dispatchEvent(event);
       if (handledByHost) return;
 
-      // No host glue: change the URL ourselves and tell whoever listens to history about it.
-      // The host is expected to update the `url` attribute from there.
+      // No host glue: change the URL ourselves, tell whoever listens to history about it (so a
+      // host router can catch up), and show the new page even if the host never updates `url`.
       writeHistory(href, replace);
       window.dispatchEvent(new PopStateEvent('popstate', { state: window.history.state }));
+      this.#router?.setUrl(browserUrl());
     }
 
     #writeOwn(href: string, replace: boolean): void {

@@ -82,6 +82,7 @@ describe('host-managed (url attribute set)', () => {
     click(element, 'user-42');
     expect(window.location.pathname).toBe('/admin/users/42');
     expect(popstate).toHaveBeenCalledOnce();
+    expect(heading(element)).toBe('User 42');
     window.removeEventListener('popstate', popstate);
   });
 
