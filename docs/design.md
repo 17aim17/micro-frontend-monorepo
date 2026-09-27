@@ -295,6 +295,8 @@ export function AdminRoute() {
 // <Route path="admin/*" element={<AdminRoute />} />
 ```
 
+**Vue 3 + Vue Router (the second demo host):** `apps/demo-host-vue/src/AdminRoute.vue` does the same with `<admin-app base-path="/admin" :url="route.fullPath" @mfe-navigate="onNavigate" />`, a catch-all route `/admin/:rest(.*)*`, and `isCustomElement` set for `admin-app` in the Vue compiler options. The remote is unchanged.
+
 **When the remote fails to load:** the host still owns `/admin/*`. The URL stays, the host layout and navigation keep working, only the admin section shows the error with **Try again**. A failed load isn't cached, so retrying or coming back to `/admin` tries again.
 
 **Vanilla host (test fixture):** render `<admin-app base-path="/admin" url="...">` when the path starts with `/admin`, update `url` on `popstate`, and don't handle `mfe-navigate`, so the fallback path is exercised.

@@ -4,7 +4,7 @@ Path-based routing for Svelte 5 apps, including apps that run as microfrontends 
 
 A Svelte app mounted under `/admin` in a React (or Vue, Angular, plain JS) host gets real URLs like `/admin/users/42`, with nested routes, params, query strings, back/forward and deep links, while the host's own router stays in sync. No hash routing, no patching of `window.history`.
 
-This repo holds the library and a demo: a React dashboard (host) that loads a Svelte admin app (remote) through Module Federation 2.0.
+This repo holds the library and a demo: the same Svelte admin app (remote) running inside a React dashboard and a Vue dashboard (hosts), loaded through Module Federation 2.0. The remote doesn't change between the two.
 
 ## The problem
 
@@ -129,7 +129,18 @@ function AdminRoute() {
 }
 ```
 
-The demo's full version also loads the remote and handles loading and failure: [`apps/demo-host-react/src/AdminRoute.tsx`](apps/demo-host-react/src/AdminRoute.tsx).
+**The same in Vue 3 + Vue Router:**
+
+```vue
+<!-- route: { path: '/admin/:rest(.*)*', component: AdminRoute } -->
+<admin-app
+  base-path="/admin"
+  :url="route.fullPath"
+  @mfe-navigate="(event) => { event.preventDefault(); router.push(event.detail.href) }"
+/>
+```
+
+The demos' full versions also load the remote and handle loading and failure: [`AdminRoute.tsx`](apps/demo-host-react/src/AdminRoute.tsx) (React) and [`AdminRoute.vue`](apps/demo-host-vue/src/AdminRoute.vue) (Vue).
 
 ## Run the demo
 
@@ -140,8 +151,11 @@ pnpm install
 pnpm dev
 ```
 
-- http://localhost:5173: the React dashboard. Open **Admin** and click around: the host's "location" line and its active nav link follow every click inside the Svelte app.
+- http://localhost:5173: the **React** dashboard. Open **Admin** and click around: the host's "location" line and its active nav link follow every click inside the Svelte app.
+- http://localhost:5175: the **Vue** dashboard, with the same Svelte app inside.
 - http://localhost:5174: the Svelte admin app on its own, with the same routes.
+
+Each app is labeled in the page (React host, Vue host, Svelte remote).
 
 Other commands: `pnpm test`, `pnpm typecheck`, `pnpm build`.
 
@@ -151,7 +165,8 @@ Other commands: `pnpm test`, `pnpm typecheck`, `pnpm build`.
 | --- | --- |
 | [`packages/svelte-microfrontend-router`](packages/svelte-microfrontend-router) | The library: route matcher, router core, `Router` / `Outlet` / `Link`, and `defineRemote()` (the custom element that implements the host contract) |
 | [`apps/demo-remote`](apps/demo-remote) | Svelte 5 admin app built on the library, exposed through Module Federation (`@module-federation/vite`, with a manifest) |
-| [`apps/demo-host-react`](apps/demo-host-react) | React 19 dashboard that registers and loads the remote at runtime (`@module-federation/runtime`) |
+| [`apps/demo-host-react`](apps/demo-host-react) | React 19 + React Router dashboard that registers and loads the remote at runtime (`@module-federation/runtime`) |
+| [`apps/demo-host-vue`](apps/demo-host-vue) | Vue 3 + Vue Router dashboard doing the same, to show the remote works unchanged in a second framework |
 | [`docs/design.md`](docs/design.md) | The design: problem, contract, decisions and tradeoffs, prior art |
 
 ## Design decisions
@@ -171,7 +186,7 @@ More in [`docs/design.md`](docs/design.md).
 
 Working and tested: 76 unit and component tests, plus manual end-to-end checks in the browser (dev and production builds).
 
-Next: a Vue host to show a second framework, Playwright end-to-end tests against both hosts, CI, and publishing to npm.
+Next: Playwright end-to-end tests against both hosts, CI, a live demo, and publishing to npm.
 
 ## License
 
