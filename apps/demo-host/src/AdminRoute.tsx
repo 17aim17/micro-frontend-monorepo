@@ -1,11 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
+import type { MfeNavigateDetail } from './custom-elements'
 import { loadAdminRemote } from './loadAdminRemote.ts'
 
-interface MfeNavigateDetail {
-  href: string
-  replace: boolean
-}
 
 /**
  * The whole host-side integration. The host hands the remote everything under /admin:
