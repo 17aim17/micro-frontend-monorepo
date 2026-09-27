@@ -215,6 +215,35 @@ stateDiagram-v2
 | What `navigate` does | dispatches `mfe-navigate`, and falls back if nobody handles it | `pushState` / `replaceState`, then `setUrl` |
 | Listeners on `window` | none | one `popstate` listener, removed on unmount |
 
+**Where the mode is decided.** One check in `#mount()`: is there a `url` attribute? The host never says "I'm a host" any other way; passing `url` is what makes it one. Leaving `url` off (as the remote's standalone page does) makes the element run on its own.
+
+```ts
+// element/defineRemote.ts, #mount()
+const hostManaged = this.hasAttribute('url');
+const router = createRouter({
+  basePath: this.getAttribute('base-path') ?? '/',
+  url: hostManaged ? this.getAttribute('url') : browserUrl(),       // where the URL comes from
+  navigate: (href, { replace }) =>
+    hostManaged ? this.#askHost(href, replace)                      // ask the host
+                : this.#writeOwn(href, replace),                    // pushState + setUrl
+});
+if (!hostManaged) this.#cleanup.push(listenToBrowser(router));      // only standalone listens
+```
+
+`attributeChangedCallback` re-checks it: if `url` is added or removed after mount, the element remounts in the other mode. A plain Svelte app makes the same choice in `Router.svelte`: it finds no router in context, so it creates one on browser history and listens to `popstate` itself.
+
+**Inside a host, every navigation is a request.** `navigate('/users/42')` (inside the remote) and `navigateHost('/reports')` (out to the host) both go through the same handler, so both become `mfe-navigate`. Even a small move like `/admin/users` → `/admin/users/42` changes the browser URL, so the host's router has to be the one to make it.
+
+**How the remote "listens" in host-managed mode.** It has no listener on `window`. The browser calls the element's `attributeChangedCallback` whenever the host changes `url` (because the class declares `observedAttributes = ['base-path', 'url']`). That calls `router.setUrl()`, the router's derived state (path, matches, params) recomputes, and the matching page renders:
+
+```
+host router navigates (a push, a host link, back/forward)
+  → host re-renders its /admin/* route with the new location
+  → the url attribute changes on the same <admin-app> element
+  → browser calls attributeChangedCallback('url', old, new)
+  → router.setUrl(new) → path / matches / params recompute → page renders
+```
+
 ### `mfe-navigate` and the fallback
 
 ```mermaid
@@ -263,6 +292,8 @@ No `url` attribute, so self-managed: the element reads `window.location`, listen
 
 ## Details that look odd but are deliberate
 
+- **The remote asks instead of writing the URL.** `history.pushState` fires no event, so a remote that wrote the URL directly would leave the host's router stale (its location, active links and view), which is the exact bug this library exists to fix. When the host's router makes the change, it knows immediately, keeps its own history state, and runs its own guards, scrolling and analytics. The fallback (write history, then a synthetic `popstate`) is only the safety net for hosts with no glue.
+- **The URL is passed down as an attribute.** The remote can't observe the host's navigations itself: the host's router uses `pushState`, which fires no event, and catching it would mean patching `window.history` for the whole page. The host's router always knows the location, so it tells the remote. An attribute works from every framework's templates (`url={...}` in React, `:url="..."` in Vue, `setAttribute` in plain JS) and is visible in DevTools.
 - **No optimistic updates.** Waiting for the location to come back costs nothing (the host updates synchronously in practice) and guarantees the view matches the URL.
 - **Attributes, not properties.** The element has no `url` or `basePath` JavaScript properties, so React 19 and Vue always set them as attributes, and string attributes work in any framework's templates.
 - **A microtask before unmount.** It's what makes DOM moves safe. Everything that runs after removal (late navigations) is covered by the liveness guard.
