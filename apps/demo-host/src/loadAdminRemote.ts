@@ -1,8 +1,8 @@
-// Loads the admin remote's module, which registers <admin-app>. Any loader works here
-// (a script tag, Module Federation, ...): the routing contract starts once the element exists.
+// Loads the admin remote through Module Federation. Its exposed `register` module
+// defines <admin-app>; from then on, the routing contract takes over.
 let loading: Promise<unknown> | undefined
 
 export function loadAdminRemote(): Promise<unknown> {
-  loading ??= import(/* @vite-ignore */ import.meta.env.VITE_ADMIN_REMOTE_URL)
+  loading ??= import('admin/register')
   return loading
 }
