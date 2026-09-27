@@ -1,0 +1,22 @@
+{
+  "name": "demo-remote",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:plain": "VITE_PLAIN=1 vite --port 5176",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "svelte-check --tsconfig ./tsconfig.json --threshold error"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "svelte-check": "^4.7.6",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.1"
+  },
+  "dependencies": {
+    "svelte": "^5.57.1",
+    "svelte-microfrontend-router": "workspace:*"
+  }
+}
