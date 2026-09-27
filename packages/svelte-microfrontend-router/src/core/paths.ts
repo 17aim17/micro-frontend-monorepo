@@ -58,6 +58,17 @@ export function isAbsoluteUrl(to: string): boolean {
   return /^[a-z][a-z\d+.-]*:/i.test(to) || to.startsWith('//');
 }
 
+/**
+ * True when two URLs point at the same place, ignoring a trailing slash and
+ * percent-encoding differences (`/admin/` vs `/admin`, `/a b` vs `/a%20b`).
+ */
+export function sameUrl(a: string, b: string): boolean {
+  const left = parseUrl(a);
+  const right = parseUrl(b);
+  const trim = (path: string) => (path.length > 1 ? path.replace(/\/+$/, '') : path);
+  return trim(left.pathname) === trim(right.pathname) && left.search === right.search && left.hash === right.hash;
+}
+
 /** Joins URL parts back into a string. */
 export function formatUrl(parts: UrlParts): string {
   return parts.pathname + parts.search + parts.hash;

@@ -86,6 +86,15 @@ describe('RouterCore', () => {
     expect(navigate).toHaveBeenLastCalledWith('/admin/users', { replace: true });
   });
 
+  it('treats trailing slashes and encoding as the same URL when deciding to replace', () => {
+    const { router, navigate } = setup('/admin/');
+    router.navigate('/');
+    expect(navigate).toHaveBeenLastCalledWith('/admin', { replace: true });
+    router.setUrl('/admin/users/jane doe');
+    router.navigate('/users/jane doe');
+    expect(navigate).toHaveBeenLastCalledWith('/admin/users/jane%20doe', { replace: true });
+  });
+
   it('re-derives everything when the base path changes', () => {
     const { router } = setup('/apps/admin/users/42');
     expect(router.path).toBeNull();

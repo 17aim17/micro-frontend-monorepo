@@ -1,5 +1,5 @@
 import { matchRoutes, type Params, type RouteDefinition, type RouteMatch } from './matcher.js';
-import { isAbsoluteUrl, joinBase, normalizeBase, parseUrl, resolveTarget, stripBase } from './paths.js';
+import { isAbsoluteUrl, joinBase, normalizeBase, parseUrl, resolveTarget, sameUrl, stripBase } from './paths.js';
 
 export interface NavigateOptions {
   /** Replace the current history entry instead of pushing a new one. */
@@ -112,7 +112,7 @@ export class RouterCore {
    */
   navigate(to: string, options: NavigateOptions = {}): void {
     const href = this.href(to);
-    this.#navigate(href, { replace: options.replace ?? href === this.#url });
+    this.#navigate(href, { replace: options.replace ?? sameUrl(href, this.#url) });
   }
 
   /** Navigate to a path owned by the host, outside this app's base path. */
