@@ -1,0 +1,54 @@
+{
+  "name": "svelte-microfrontend-router",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Path-based routing for Svelte 5 apps, including apps running as microfrontend remotes inside any host",
+  "license": "MIT",
+  "author": "Ashish Kumar",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/17aim17/micro-frontend-monorepo.git",
+    "directory": "packages/svelte-microfrontend-router"
+  },
+  "keywords": [
+    "svelte",
+    "router",
+    "microfrontend",
+    "micro-frontend",
+    "web-components",
+    "custom-elements"
+  ],
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "svelte": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "svelte": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "svelte-package -i src/lib -o dist && publint",
+    "test": "vitest run",
+    "typecheck": "svelte-check --tsconfig ./tsconfig.json --threshold error"
+  },
+  "peerDependencies": {
+    "svelte": "^5.46.0"
+  },
+  "devDependencies": {
+    "@sveltejs/package": "^2.5.8",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "jsdom": "^30.1.1",
+    "publint": "^0.3.24",
+    "svelte": "^5.57.1",
+    "svelte-check": "^4.7.6",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.1",
+    "vitest": "^5.0.2"
+  }
+}
