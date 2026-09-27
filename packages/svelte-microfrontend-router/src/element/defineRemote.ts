@@ -51,11 +51,32 @@ export function defineRemote(
 
     #app: Record<string, unknown> | null = null;
     #router: RouterCore | null = null;
+    #hostManaged = false;
     #cleanup: Array<() => void> = [];
 
     connectedCallback(): void {
-      if (this.#app) return;
+      if (!this.#app) this.#mount();
+    }
 
+    disconnectedCallback(): void {
+      this.#unmount();
+    }
+
+    attributeChangedCallback(name: string, _previous: string | null, value: string | null): void {
+      if (!this.#router) return;
+      if (name === 'url') {
+        // Adding or removing `url` switches between host-managed and self-managed: start over.
+        if (this.hasAttribute('url') !== this.#hostManaged) {
+          this.#unmount();
+          this.#mount();
+        } else if (value !== null) {
+          this.#router.setUrl(value);
+        }
+      }
+      if (name === 'base-path') this.#router.setBasePath(value);
+    }
+
+    #mount(): void {
       const hostManaged = this.hasAttribute('url');
       const router = createRouter({
         basePath: this.getAttribute('base-path') ?? '/',
@@ -68,23 +89,18 @@ export function defineRemote(
         }
       });
       this.#router = router;
+      this.#hostManaged = hostManaged;
       if (!hostManaged) this.#cleanup.push(listenToBrowser(router));
 
       const target = shadow ? (this.shadowRoot ?? this.attachShadow({ mode: 'open' })) : this;
       this.#app = mount(App, { target, context: new Map([[ROUTER_KEY, router]]) });
     }
 
-    disconnectedCallback(): void {
+    #unmount(): void {
       if (this.#app) void unmount(this.#app);
       this.#app = null;
       this.#router = null;
       for (const cleanup of this.#cleanup.splice(0)) cleanup();
-    }
-
-    attributeChangedCallback(name: string, _previous: string | null, value: string | null): void {
-      if (!this.#router) return;
-      if (name === 'url' && value !== null) this.#router.setUrl(value);
-      if (name === 'base-path') this.#router.setBasePath(value);
     }
 
     #askHost(href: string, replace: boolean): void {

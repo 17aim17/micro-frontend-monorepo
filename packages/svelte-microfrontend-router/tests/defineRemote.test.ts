@@ -147,6 +147,40 @@ describe('self-managed (no url attribute)', () => {
   });
 });
 
+describe('switching modes after mount', () => {
+  it('becomes self-managed when the host removes url', () => {
+    const element = render({ 'base-path': '/admin', url: '/admin/users/42' });
+    element.removeAttribute('url');
+    flushSync();
+    window.history.pushState(null, '', '/admin/users/7');
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    flushSync();
+    expect(heading(element)).toBe('User 7');
+  });
+
+  it('becomes host-managed when the host adds url, and stops following history', () => {
+    const element = render({ 'base-path': '/admin' });
+    element.setAttribute('url', '/admin');
+    flushSync();
+    window.history.pushState(null, '', '/admin/users/9');
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    flushSync();
+    expect(heading(element)).toBe('Home');
+
+    element.setAttribute('url', '/admin/users/42');
+    flushSync();
+    expect(heading(element)).toBe('User 42');
+  });
+
+  it('follows base-path changes', () => {
+    const element = render({ 'base-path': '/admin', url: '/apps/admin/users/42' });
+    expect(heading(element)).toBeUndefined();
+    element.setAttribute('base-path', '/apps/admin');
+    flushSync();
+    expect(heading(element)).toBe('User 42');
+  });
+});
+
 describe('lifecycle and styles', () => {
   it.each([
     ['host-managed', { 'base-path': '/admin', url: '/admin' }],
