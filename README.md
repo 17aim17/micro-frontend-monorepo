@@ -31,3 +31,16 @@ cd react/container && npm install && npm start
 ```
 
 Open http://localhost:8080.
+
+## Deployment
+
+`.github/workflows/container.yml` runs on pushes to `main` that touch `react/container/`. It builds the container and syncs `dist/` to an S3 bucket under `container/latest`. It needs these repository secrets: `AWS_S3_BUCKET_NAME`, `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+
+## Known issues
+
+This is a learning project from 2023, kept as it was written.
+
+- The deploy workflow has no secrets configured and sets `AWS_DEFAULT_REGION` to an empty string, so the S3 sync step fails.
+- Only the container has a deploy workflow. There is none for `marketing`, and no CloudFront setup in front of the bucket.
+- `react/auth` and `react/dashboard` (planned as a Vue remote) contain only a `package.json`, with no code yet.
+- Dependencies are from 2020-2023 (React 17, Material UI v4, webpack-dev-server 3).
