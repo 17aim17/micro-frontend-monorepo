@@ -184,9 +184,13 @@ More in [`docs/design.md`](docs/design.md).
 
 ## Status
 
-Working and tested: 76 unit and component tests, plus manual end-to-end checks in the browser (dev and production builds).
+Working and tested:
+- 76 unit and component tests: the matcher, the router core, `Link`, the standalone `Router`, and the custom element in both modes (fallback, mode switches, moving and removing it, shadow DOM styles).
+- Checked in the browser with both hosts, in dev and production builds: deep links, host router sync, query params, back and forward, both kinds of 404, and the remote failing to load and recovering.
 
-Next: Playwright end-to-end tests against both hosts, CI, a live demo, and publishing to npm.
+Known limits (case-sensitive paths, exact-match active links, no SSR) are listed in [`docs/design.md`](docs/design.md#internals).
+
+Next: CI, a live demo, and publishing to npm.
 
 ## License
 
