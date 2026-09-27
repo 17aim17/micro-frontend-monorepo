@@ -77,3 +77,7 @@ aside nav a.active {
 .remote-error {
   color: #b42318;
 }
+
+.remote-loading {
+  color: #57534e;
+}
