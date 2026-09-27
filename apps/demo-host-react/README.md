@@ -1,4 +1,4 @@
-# demo-host
+# demo-host-react
 
 React 19 dashboard that hosts the Svelte admin remote under `/admin`, using React Router and `@module-federation/runtime`. Scaffolded with `create vite` (react-ts).
 

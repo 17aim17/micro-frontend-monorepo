@@ -173,7 +173,7 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
 
-  apps/demo-host:
+  apps/demo-host-react:
     dependencies:
       '@module-federation/runtime':
         specifier: ^2.9.0

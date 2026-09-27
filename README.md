@@ -129,7 +129,7 @@ function AdminRoute() {
 }
 ```
 
-The demo's full version also loads the remote and handles loading and failure: [`apps/demo-host/src/AdminRoute.tsx`](apps/demo-host/src/AdminRoute.tsx).
+The demo's full version also loads the remote and handles loading and failure: [`apps/demo-host-react/src/AdminRoute.tsx`](apps/demo-host-react/src/AdminRoute.tsx).
 
 ## Run the demo
 
@@ -151,7 +151,7 @@ Other commands: `pnpm test`, `pnpm typecheck`, `pnpm build`.
 | --- | --- |
 | [`packages/svelte-microfrontend-router`](packages/svelte-microfrontend-router) | The library: route matcher, router core, `Router` / `Outlet` / `Link`, and `defineRemote()` (the custom element that implements the host contract) |
 | [`apps/demo-remote`](apps/demo-remote) | Svelte 5 admin app built on the library, exposed through Module Federation (`@module-federation/vite`, with a manifest) |
-| [`apps/demo-host`](apps/demo-host) | React 19 dashboard that registers and loads the remote at runtime (`@module-federation/runtime`) |
+| [`apps/demo-host-react`](apps/demo-host-react) | React 19 dashboard that registers and loads the remote at runtime (`@module-federation/runtime`) |
 | [`docs/design.md`](docs/design.md) | The design: problem, contract, decisions and tradeoffs, prior art |
 
 ## Design decisions

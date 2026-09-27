@@ -266,7 +266,7 @@ Under both sits a framework-free router core, `createRouter({ url, basePath?, ro
 
 No host package is required. The contract is documented DOM.
 
-**React 19 + React Router (the demo host):** `apps/demo-host/src/AdminRoute.tsx`, trimmed:
+**React 19 + React Router (the demo host):** `apps/demo-host-react/src/AdminRoute.tsx`, trimmed:
 
 ```tsx
 export function AdminRoute() {
