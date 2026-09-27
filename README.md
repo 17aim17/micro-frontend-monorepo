@@ -21,7 +21,7 @@ This problem shows up in practice: Module Federation's own tracker has an open q
 **The host owns the URL. The remote owns its pages.** The host hands the remote a base path, and the remote renders everything under it.
 
 ```mermaid
-flowchart LR
+flowchart TB
   subgraph Page["Browser page"]
     History[("window.history")]
     subgraph Host["Dashboard host: React + React Router"]

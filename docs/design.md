@@ -100,7 +100,7 @@ Compared against this problem (from reading its source, not just its README):
 ## Architecture
 
 ```mermaid
-flowchart LR
+flowchart TB
   subgraph Page["Browser page"]
     History[("window.history")]
     subgraph Host["Dashboard host: React + React Router"]
