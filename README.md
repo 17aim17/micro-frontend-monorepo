@@ -1,5 +1,7 @@
 # svelte-microfrontend-router
 
+[![CI](https://github.com/17aim17/svelte-microfrontend-router/actions/workflows/ci.yml/badge.svg)](https://github.com/17aim17/svelte-microfrontend-router/actions/workflows/ci.yml)
+
 Path-based routing for Svelte 5 apps, including apps that run as microfrontends inside a host built with any other framework.
 
 A Svelte app mounted under `/admin` in a React (or Vue, Angular, plain JS) host gets real URLs like `/admin/users/42`, with nested routes, params, query strings, back/forward and deep links, while the host's own router stays in sync. No hash routing, no patching of `window.history`.
