@@ -5,3 +5,5 @@ export { getRouter } from './context.js';
 export { createRouter, RouterCore } from './core/router.svelte.js';
 export type { NavigateHandler, NavigateOptions, QueryUpdates, RouterOptions } from './core/router.svelte.js';
 export type { Params, RouteDefinition, RouteMatch } from './core/matcher.js';
+export { defineRemote, NAVIGATE_EVENT } from './element/defineRemote.js';
+export type { DefineRemoteOptions, MfeNavigateDetail } from './element/defineRemote.js';
