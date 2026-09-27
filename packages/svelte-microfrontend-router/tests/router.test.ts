@@ -86,6 +86,18 @@ describe('RouterCore', () => {
     expect(navigate).toHaveBeenLastCalledWith('/admin/users', { replace: true });
   });
 
+  it('keeps the hash when setting query params', () => {
+    const { router, navigate } = setup('/admin/users?a=1#top');
+    router.setQuery({ b: 2 });
+    expect(navigate).toHaveBeenLastCalledWith('/admin/users?a=1&b=2#top', { replace: false });
+  });
+
+  it('ignores setQuery while the URL is outside the base', () => {
+    const { router, navigate } = setup('/reports');
+    router.setQuery({ b: 2 });
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
   it('treats trailing slashes and encoding as the same URL when deciding to replace', () => {
     const { router, navigate } = setup('/admin/');
     router.navigate('/');

@@ -120,15 +120,19 @@ export class RouterCore {
     this.#navigate(href, { replace: options.replace ?? false });
   }
 
-  /** Set or remove query params (`null`/`undefined` removes). Keeps the current path. */
+  /**
+   * Set or remove query params (`null`/`undefined` removes). Keeps the current path and hash.
+   * Does nothing while the URL is outside this app's base path.
+   */
   setQuery(updates: QueryUpdates, options: NavigateOptions = {}): void {
+    if (this.#path === null) return;
     const query = new URLSearchParams(this.#parts.search);
     for (const [key, value] of Object.entries(updates)) {
       if (value === null || value === undefined) query.delete(key);
       else query.set(key, String(value));
     }
     const search = query.toString();
-    this.navigate((this.#path ?? '/') + (search ? `?${search}` : ''), options);
+    this.navigate(this.#path + (search ? `?${search}` : '') + this.#parts.hash, options);
   }
 }
 
