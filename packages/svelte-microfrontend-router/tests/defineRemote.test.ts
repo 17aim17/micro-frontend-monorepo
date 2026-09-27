@@ -139,10 +139,11 @@ describe('self-managed (no url attribute)', () => {
     expect(heading(element)).toBe('User 42');
   });
 
-  it('removes its popstate listener when removed', () => {
+  it('removes its popstate listener when removed', async () => {
     const element = render({ 'base-path': '/admin' });
     const remove = vi.spyOn(window, 'removeEventListener');
     element.remove();
+    await Promise.resolve();
     expect(remove.mock.calls.filter(([type]) => type === 'popstate')).toHaveLength(1);
   });
 });
@@ -197,15 +198,27 @@ describe('lifecycle and styles', () => {
     expect(window.location.pathname).toBe('/');
   });
 
-  it('unmounts on removal and mounts again when re-added', () => {
+  it('unmounts on removal and mounts again when re-added', async () => {
     const element = render({ 'base-path': '/admin', url: '/admin/users/42' });
     element.remove();
+    await Promise.resolve();
     flushSync();
     expect(heading(element)).toBeUndefined();
 
     document.body.append(element);
     flushSync();
     expect(heading(element)).toBe('User 42');
+  });
+
+  it('keeps the app when the element is moved in the DOM', async () => {
+    const element = render({ 'base-path': '/admin', url: '/admin/users/42' });
+    const before = element.shadowRoot!.querySelector('h1');
+    const container = document.createElement('div');
+    document.body.append(container);
+    container.append(element);
+    await Promise.resolve();
+    flushSync();
+    expect(element.shadowRoot!.querySelector('h1')).toBe(before);
   });
 
   it('puts component styles in the shadow root, not the document', () => {

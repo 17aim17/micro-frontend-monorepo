@@ -59,7 +59,11 @@ export function defineRemote(
     }
 
     disconnectedCallback(): void {
-      this.#unmount();
+      // Moving the element (as React and Vue do when they reorder nodes) disconnects and
+      // reconnects it in the same task. Only unmount if it's still detached afterwards.
+      queueMicrotask(() => {
+        if (!this.isConnected) this.#unmount();
+      });
     }
 
     attributeChangedCallback(name: string, _previous: string | null, value: string | null): void {
