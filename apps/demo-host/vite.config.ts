@@ -15,7 +15,8 @@ export default defineConfig(({ mode }) => {
           admin: {
             type: 'module',
             name: 'admin',
-            entry: env.VITE_ADMIN_REMOTE_ENTRY,
+            // The remote's manifest describes its entry, exposes and chunks.
+            entry: env.VITE_ADMIN_REMOTE_MANIFEST,
             entryGlobalName: 'admin',
             shareScope: 'default',
           },
