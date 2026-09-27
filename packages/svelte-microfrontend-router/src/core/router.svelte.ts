@@ -103,9 +103,13 @@ export class RouterCore {
     return joinBase(this.#basePath, target.pathname) + target.search + target.hash;
   }
 
-  /** Navigate within this app. `to` is relative to the base and may include a query or hash. */
+  /**
+   * Navigate within this app. `to` is relative to the base and may include a query or hash.
+   * Navigating to the current URL replaces the entry, so Back doesn't appear to do nothing.
+   */
   navigate(to: string, options: NavigateOptions = {}): void {
-    this.#navigate(this.href(to), { replace: options.replace ?? false });
+    const href = this.href(to);
+    this.#navigate(href, { replace: options.replace ?? href === this.#url });
   }
 
   /** Navigate to a path owned by the host, outside this app's base path. */

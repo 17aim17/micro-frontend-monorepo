@@ -48,6 +48,14 @@ describe('RouterCore', () => {
     expect(router.params).toEqual({ id: '42' });
   });
 
+  it('replaces instead of pushing when navigating to the current URL', () => {
+    const { router, navigate } = setup('/admin/users/42');
+    router.navigate('/users/42');
+    expect(navigate).toHaveBeenLastCalledWith('/admin/users/42', { replace: true });
+    router.navigate('/users/42', { replace: false });
+    expect(navigate).toHaveBeenLastCalledWith('/admin/users/42', { replace: false });
+  });
+
   it('navigates to host paths as they are', () => {
     const { router, navigate } = setup();
     router.navigateHost('/reports', { replace: true });
