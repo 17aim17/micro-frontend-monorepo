@@ -8,6 +8,14 @@ A Svelte app mounted under `/admin` in a React (or Vue, Angular, plain JS) host 
 
 This repo holds the library and a demo: the same Svelte admin app (remote) running inside a React dashboard and a Vue dashboard (hosts), loaded through Module Federation 2.0. The remote doesn't change between the two.
 
+## Live demo
+
+- **[React host](https://svelte-mfe-react.vercel.app/admin/users)**: open Admin and click around. The host's "location" line and its active nav link follow every click inside the Svelte app.
+- **[Vue host](https://svelte-mfe-vue.vercel.app/admin/users)**: the same Svelte app, unchanged, inside Vue.
+- **[Svelte remote on its own](https://svelte-mfe-admin.vercel.app/users)**: the same routes with no host.
+
+Three separate Vercel deployments, so the hosts load the remote from another origin, as in a real microfrontend setup.
+
 ## The problem
 
 Svelte ships no router, and the options that exist don't work well inside another app:
@@ -194,7 +202,7 @@ Working and tested:
 
 Known limits (case-sensitive paths, exact-match active links, no SSR) are listed in [`docs/design.md`](docs/design.md#internals).
 
-Next: a live demo.
+Deployed to Vercel as three static sites: each host is built with `pnpm --filter <host> build:vercel` (its `.env.vercel` points at the remote's manifest), and each app's `public/vercel.json` sets SPA rewrites, plus CORS and caching headers on the remote.
 
 ## License
 
