@@ -20,7 +20,7 @@ const heading = (element: HTMLElement) => root(element).querySelector('h1')?.tex
 const click = (element: HTMLElement, testId: string) => {
   root(element)
     .querySelector<HTMLElement>(`[data-testid="${testId}"]`)!
-    .dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, button: 0 }));
+    .dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true, cancelable: true, button: 0 }));
   flushSync();
 };
 
