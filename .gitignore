@@ -2,8 +2,6 @@ node_modules
 dist
 .turbo
 .DS_Store
-test-results
-playwright-report
 *.tsbuildinfo
 
 # Temp output of @sveltejs/package (not SvelteKit). The build removes it; this is a safety net.
