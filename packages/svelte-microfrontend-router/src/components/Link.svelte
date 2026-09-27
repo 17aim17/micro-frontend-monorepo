@@ -16,14 +16,16 @@
   let { to, replace = false, children, onclick, ...rest }: Props = $props();
 
   const router = getRouter();
-  const href = $derived(router.href(to));
+  // Absolute URLs (https:, mailto:, //host) are rendered as they are and left to the browser.
+  const external = $derived(/^[a-z][a-z\d+.-]*:/i.test(to) || to.startsWith('//'));
+  const href = $derived(external ? to : router.href(to));
 
   const trim = (path: string) => (path.length > 1 ? path.replace(/\/+$/, '') : path);
-  const active = $derived(trim(parseUrl(href).pathname) === trim(parseUrl(router.url).pathname));
+  const active = $derived(!external && trim(parseUrl(href).pathname) === trim(parseUrl(router.url).pathname));
 
   function handleClick(event: MouseEvent & { currentTarget: EventTarget & HTMLAnchorElement }) {
     onclick?.(event);
-    if (event.defaultPrevented) return;
+    if (event.defaultPrevented || external) return;
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const target = event.currentTarget.getAttribute('target');
     if ((target && target !== '_self') || event.currentTarget.hasAttribute('download')) return;

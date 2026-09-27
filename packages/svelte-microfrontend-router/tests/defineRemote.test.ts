@@ -88,6 +88,28 @@ describe('host-managed (url attribute set)', () => {
     expect(add.mock.calls.filter(([type]) => type === 'popstate')).toHaveLength(0);
   });
 
+  it('leaves external links to the browser', () => {
+    const element = render({ 'base-path': '/admin', url: '/admin' });
+    const link = element.shadowRoot!.querySelector<HTMLAnchorElement>('[data-testid="external"]')!;
+    expect(link.getAttribute('href')).toBe('https://svelte.dev');
+
+    const navigate = vi.fn();
+    element.addEventListener(NAVIGATE_EVENT, navigate);
+    // The document sees the click after the router's handler: record whether the router
+    // cancelled it, then cancel it so jsdom doesn't try to leave the page.
+    let cancelledByRouter: boolean | undefined;
+    const onClick = (event: Event) => {
+      cancelledByRouter = event.defaultPrevented;
+      event.preventDefault();
+    };
+    document.addEventListener('click', onClick);
+    click(element, 'external');
+    document.removeEventListener('click', onClick);
+
+    expect(cancelledByRouter).toBe(false);
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
   it('shows its own not-found view for unknown paths under the base', () => {
     const element = render({ 'base-path': '/admin', url: '/admin/nope' });
     expect(heading(element)).toBe('Not found');
