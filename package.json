@@ -1,5 +1,5 @@
 {
-  "name": "micro-frontend-monorepo",
+  "name": "svelte-microfrontend-router-workspace",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@12.6.0",

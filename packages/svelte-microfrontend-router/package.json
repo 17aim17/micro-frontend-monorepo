@@ -7,7 +7,7 @@
   "author": "Ashish Kumar",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/17aim17/micro-frontend-monorepo.git",
+    "url": "git+https://github.com/17aim17/svelte-microfrontend-router.git",
     "directory": "packages/svelte-microfrontend-router"
   },
   "keywords": [
