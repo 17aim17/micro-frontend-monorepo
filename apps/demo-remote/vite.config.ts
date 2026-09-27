@@ -4,8 +4,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [
-    // Styles are injected by the components so they land in the element's shadow root.
-    svelte({ compilerOptions: { css: 'injected' } }),
+    svelte(),
     federation({
       name: 'admin',
       filename: 'remoteEntry.js',
