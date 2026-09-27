@@ -1,6 +1,6 @@
 # Design: routing for Svelte 5 remotes inside any host
 
-This document explains why `svelte-microfrontend-router` exists and how it's built: the problem, the requirements, the host contract, and the decisions behind it. For usage, see the [README](../README.md).
+This document explains why `svelte-microfrontend-router` exists and how it's built: the problem, the requirements, the host contract, and the decisions behind it. For usage, see the [README](../README.md). For a module-by-module tour of the code, see [internals.md](internals.md).
 
 # Part 1: Problem
 

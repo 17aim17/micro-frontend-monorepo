@@ -180,6 +180,7 @@ Other commands: `pnpm test`, `pnpm typecheck`, `pnpm build`.
 | [`apps/demo-host-react`](apps/demo-host-react) | React 19 + React Router dashboard that registers and loads the remote at runtime (`@module-federation/runtime`) |
 | [`apps/demo-host-vue`](apps/demo-host-vue) | Vue 3 + Vue Router dashboard doing the same, to show the remote works unchanged in a second framework |
 | [`docs/design.md`](docs/design.md) | The design: problem, contract, decisions and tradeoffs, prior art |
+| [`docs/internals.md`](docs/internals.md) | How the code works: each module, the element's lifecycle, the fallback, and three end-to-end traces |
 
 ## Design decisions
 
@@ -188,7 +189,7 @@ Other commands: `pnpm test`, `pnpm typecheck`, `pnpm build`.
 - **Nothing global is patched.** Each remote element scopes its routing to its own base path.
 - **The host loads remotes at runtime**, not from its build config, so a slow or broken remote only affects its own section: the rest of the dashboard renders immediately, and the remote's section shows a retryable error.
 
-More in [`docs/design.md`](docs/design.md).
+More in [`docs/design.md`](docs/design.md). For how the code works piece by piece, see [`docs/internals.md`](docs/internals.md).
 
 ## Compared to other Svelte routers
 
