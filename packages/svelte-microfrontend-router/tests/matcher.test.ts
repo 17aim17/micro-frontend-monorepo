@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Component } from 'svelte';
-import { matchRoutes, parsePattern, type RouteDefinition } from '../src/lib/core/matcher.js';
+import { matchRoutes, parsePattern, type RouteDefinition } from '../src/core/matcher.js';
 
 // The matcher never renders components, so any unique value works as a stand-in.
 const component = (name: string) => name as unknown as Component;

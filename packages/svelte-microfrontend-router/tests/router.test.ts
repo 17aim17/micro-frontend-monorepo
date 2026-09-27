@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { Component } from 'svelte';
-import { createRouter } from '../src/lib/core/router.svelte.js';
+import { createRouter } from '../src/core/router.svelte.js';
 
 const component = (name: string) => name as unknown as Component;
 const UsersLayout = component('UsersLayout');

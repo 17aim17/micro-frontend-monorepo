@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { joinBase, normalizeBase, parseUrl, resolveTarget, stripBase } from '../src/lib/core/paths.js';
+import { joinBase, normalizeBase, parseUrl, resolveTarget, stripBase } from '../src/core/paths.js';
 
 describe('normalizeBase', () => {
   it.each([

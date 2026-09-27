@@ -33,7 +33,7 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "svelte-package -i src/lib -o dist && publint",
+    "build": "svelte-package -i src -o dist && publint",
     "test": "vitest run",
     "typecheck": "svelte-check --tsconfig ./tsconfig.json --threshold error"
   },
