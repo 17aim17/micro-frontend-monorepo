@@ -18,6 +18,5 @@ export default defineConfig({
     })
   ],
   server: { port: 5174, strictPort: true, origin: 'http://localhost:5174' },
-  preview: { port: 4174, strictPort: true },
-  build: { target: 'esnext' }
+  preview: { port: 4174, strictPort: true }
 });
