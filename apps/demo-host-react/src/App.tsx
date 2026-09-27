@@ -10,7 +10,9 @@ function Layout() {
   return (
     <div className="shell">
       <aside>
-        <p className="brand">Dashboard</p>
+        <p className="brand">
+          Dashboard <span className="framework-badge">React host</span>
+        </p>
         <nav>
           <NavLink to="/" end data-testid="host-nav-home">
             Home

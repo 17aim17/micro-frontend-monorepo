@@ -49,6 +49,17 @@ aside {
   margin: 0 0 16px;
 }
 
+.framework-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: rgb(97, 218, 251);
+  color: #0b1d26;
+  font: 600 0.7rem system-ui, sans-serif;
+  vertical-align: middle;
+}
+
 aside nav {
   display: flex;
   flex-direction: column;
