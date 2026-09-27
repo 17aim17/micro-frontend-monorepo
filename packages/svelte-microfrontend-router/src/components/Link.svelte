@@ -10,10 +10,11 @@
   interface Props extends Omit<HTMLAnchorAttributes, 'href'> {
     /** Target relative to the app's base path, e.g. `/users/42` or `?role=editor`. */
     to: string;
+    /** Replace the history entry. By default, navigating to the current URL replaces and anything else pushes. */
     replace?: boolean;
   }
 
-  let { to, replace = false, children, onclick, ...rest }: Props = $props();
+  let { to, replace, children, onclick, ...rest }: Props = $props();
 
   const router = getRouter();
   // Absolute URLs (https:, mailto:, //host) are rendered as they are and left to the browser.
