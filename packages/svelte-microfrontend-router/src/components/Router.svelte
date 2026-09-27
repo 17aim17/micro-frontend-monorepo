@@ -13,7 +13,10 @@
 
   interface Props {
     routes: RouteDefinition[];
-    /** Where the app lives when it owns the URL, e.g. `/app`. Defaults to `/`. */
+    /**
+     * Where the app lives when it owns the URL, e.g. `/app`. Defaults to `/`.
+     * Ignored inside an app registered with defineRemote(): the host sets the base path there.
+     */
     basePath?: string;
   }
 
@@ -24,10 +27,12 @@
   const router = existing ?? createBrowserRouter({ basePath, routes });
   if (!existing) setRouterContext(router);
 
-  // Routes are needed before the first render, and kept in sync if the prop changes.
-  // svelte-ignore state_referenced_locally
-  router.setRoutes(routes);
+  // Pre-effects run once as soon as they're created, so routes are set before the first render.
   $effect.pre(() => router.setRoutes(routes));
+
+  $effect.pre(() => {
+    if (!existing) router.setBasePath(basePath);
+  });
 
   $effect(() => {
     if (!existing) return listenToBrowser(router);
