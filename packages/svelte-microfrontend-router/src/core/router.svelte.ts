@@ -1,5 +1,5 @@
 import { matchRoutes, type Params, type RouteDefinition, type RouteMatch } from './matcher.js';
-import { joinBase, normalizeBase, parseUrl, resolveTarget, stripBase } from './paths.js';
+import { isAbsoluteUrl, joinBase, normalizeBase, parseUrl, resolveTarget, stripBase } from './paths.js';
 
 export interface NavigateOptions {
   /** Replace the current history entry instead of pushing a new one. */
@@ -99,6 +99,9 @@ export class RouterCore {
 
   /** Full href for a target relative to the base: `href('/users')` is `/admin/users`. */
   href(to: string): string {
+    if (isAbsoluteUrl(to)) {
+      throw new Error(`"${to}" is not a path inside the app. Use navigateHost() or a plain <a> for other URLs.`);
+    }
     const target = resolveTarget(to, this.#path ?? '/');
     return joinBase(this.#basePath, target.pathname) + target.search + target.hash;
   }

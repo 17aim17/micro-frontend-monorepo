@@ -69,6 +69,13 @@ describe('RouterCore', () => {
     expect(router.href('/../../outside')).toBe('/admin/outside');
   });
 
+  it('rejects absolute URLs instead of silently rewriting them', () => {
+    const { router, navigate } = setup();
+    expect(() => router.navigate('https://example.com/users')).toThrow('not a path inside the app');
+    expect(() => router.href('//example.com/users')).toThrow('not a path inside the app');
+    expect(navigate).not.toHaveBeenCalled();
+  });
+
   it('sets and removes query params while keeping the path', () => {
     const { router, navigate } = setup('/admin/users?role=editor&page=2');
     router.setQuery({ role: 'admin', page: null });

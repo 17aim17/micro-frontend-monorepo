@@ -75,6 +75,12 @@ describe('Link', () => {
     expect(requests).toEqual([]);
   });
 
+  it('gives javascript: links no href', () => {
+    expect(link('javascript').hasAttribute('href')).toBe(false);
+    expect(click('javascript')).toBe(false);
+    expect(requests).toEqual([]);
+  });
+
   it('marks the link for the current page', () => {
     expect(link('home').getAttribute('aria-current')).toBe('page');
     expect(link('user-42').hasAttribute('aria-current')).toBe(false);

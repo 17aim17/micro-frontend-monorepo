@@ -53,6 +53,11 @@ export function resolveTarget(to: string, currentPath: string): UrlParts {
   return { pathname: resolved.pathname, search: resolved.search, hash: resolved.hash };
 }
 
+/** True for URLs with a scheme (`https:`, `mailto:`) or protocol-relative ones (`//host`). */
+export function isAbsoluteUrl(to: string): boolean {
+  return /^[a-z][a-z\d+.-]*:/i.test(to) || to.startsWith('//');
+}
+
 /** Joins URL parts back into a string. */
 export function formatUrl(parts: UrlParts): string {
   return parts.pathname + parts.search + parts.hash;
